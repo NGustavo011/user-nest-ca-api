@@ -40,4 +40,41 @@ describe('UserEntity unit tests', () => {
       expect(sut.props.createdAt).toBeInstanceOf(Date)
     })
   })
+
+  describe('Setters', () => {
+    it('Setter of name field', () => {
+      // eslint-disable-next-line @typescript-eslint/dot-notation
+      sut['name'] = 'other_name'
+      expect(sut.props.name).toEqual('other_name')
+    })
+
+    it('Getter of email field', () => {
+      // eslint-disable-next-line @typescript-eslint/dot-notation
+      sut['password'] = 'other_password'
+      expect(sut.props.password).toEqual('other_password')
+    })
+
+    it('Getter of password field', () => {
+      expect(sut.props.password).toBeDefined()
+      expect(sut.props.password).toEqual(props.password)
+      expect(typeof sut.props.password).toBe('string')
+    })
+
+    it('Getter of createdAt field', () => {
+      expect(sut.props.createdAt).toBeDefined()
+      expect(sut.props.createdAt).toBeInstanceOf(Date)
+    })
+  })
+
+  describe('Methods', () => {
+    it('Should update a user', () => {
+      sut.update({ name: 'other_name' })
+      expect(sut.props.name).toEqual('other_name')
+    })
+
+    it('Should update the password field', () => {
+      sut.updatePassword('other_password')
+      expect(sut.props.password).toEqual('other_password')
+    })
+  })
 })
