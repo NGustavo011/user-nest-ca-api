@@ -12,6 +12,6 @@ export class EnvConfigService implements EnvConfig {
   }
 
   getNodeEnv (): string {
-    return this.configService.get<string>('NODE_ENV') ?? 'DEV'
+    return this.configService.get<string>('NODE_ENV') ?? 'development'
   }
 }
