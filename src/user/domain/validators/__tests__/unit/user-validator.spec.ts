@@ -1,11 +1,14 @@
 import { UserDataBuilder } from '@/user/domain/testing/helpers/user-data-builder'
 import { UserValidatorFactory, type UserValidator, UserRules } from '../../user-validator'
+import { type UserProps } from '@/user/domain/entities/user.entity'
 
 describe('UserValidator unit tests', () => {
   let sut: UserValidator
+  let props: UserProps
 
   beforeEach(() => {
     sut = UserValidatorFactory.create()
+    props = UserDataBuilder({})
   })
 
   it('Valid case for user validator class', () => {
@@ -30,7 +33,7 @@ describe('UserValidator unit tests', () => {
 
     it('Invalidation in case of name is empty', () => {
       const isValid = sut.validate({
-        ...UserDataBuilder({}),
+        ...props,
         name: ''
       })
       expect(isValid).toBeFalsy()
@@ -43,7 +46,7 @@ describe('UserValidator unit tests', () => {
 
     it('Invalidation in case of name is not a string', () => {
       const isValid = sut.validate({
-        ...UserDataBuilder({}),
+        ...props,
         name: 1 as any
       })
       expect(isValid).toBeFalsy()
@@ -57,7 +60,7 @@ describe('UserValidator unit tests', () => {
 
     it('Invalidation in case of name length is greater 255 characters', () => {
       const isValid = sut.validate({
-        ...UserDataBuilder({}),
+        ...props,
         name: 'a'.repeat(256)
       })
       expect(isValid).toBeFalsy()
@@ -85,7 +88,7 @@ describe('UserValidator unit tests', () => {
 
     it('Invalidation in case of email is empty', () => {
       const isValid = sut.validate({
-        ...UserDataBuilder({}),
+        ...props,
         email: ''
       })
       expect(isValid).toBeFalsy()
@@ -99,7 +102,7 @@ describe('UserValidator unit tests', () => {
 
     it('Invalidation in case of email is not a string', () => {
       const isValid = sut.validate({
-        ...UserDataBuilder({}),
+        ...props,
         email: 1 as any
       })
       expect(isValid).toBeFalsy()
@@ -114,7 +117,7 @@ describe('UserValidator unit tests', () => {
 
     it('Invalidation in case of email is not a email format', () => {
       const isValid = sut.validate({
-        ...UserDataBuilder({}),
+        ...props,
         email: 'test.com'
       })
       expect(isValid).toBeFalsy()
@@ -127,7 +130,7 @@ describe('UserValidator unit tests', () => {
 
     it('Invalidation in case of email length is greater 255 characters', () => {
       const isValid = sut.validate({
-        ...UserDataBuilder({}),
+        ...props,
         email: 'a'.repeat(256)
       })
       expect(isValid).toBeFalsy()
@@ -155,7 +158,7 @@ describe('UserValidator unit tests', () => {
 
     it('Invalidation in case of password is empty', () => {
       const isValid = sut.validate({
-        ...UserDataBuilder({}),
+        ...props,
         password: ''
       })
       expect(isValid).toBeFalsy()
@@ -168,7 +171,7 @@ describe('UserValidator unit tests', () => {
 
     it('Invalidation in case of password is not a string', () => {
       const isValid = sut.validate({
-        ...UserDataBuilder({}),
+        ...props,
         password: 1 as any
       })
       expect(isValid).toBeFalsy()
@@ -182,13 +185,34 @@ describe('UserValidator unit tests', () => {
 
     it('Invalidation in case of password length is greater 100 characters', () => {
       const isValid = sut.validate({
-        ...UserDataBuilder({}),
+        ...props,
         password: 'a'.repeat(256)
       })
       expect(isValid).toBeFalsy()
       expect(sut.errors.password).toStrictEqual(
         [
           'password must be shorter than or equal to 100 characters'
+        ]
+      )
+    })
+  })
+
+  describe('CreatedAt field', () => {
+    it('Invalidation in case of createdAt is not a date (using number)', () => {
+      const isValid = sut.validate({ ...props, createdAt: 2023 as any })
+      expect(isValid).toBeFalsy()
+      expect(sut.errors.createdAt).toStrictEqual(
+        [
+          'createdAt must be a Date instance'
+        ]
+      )
+    })
+    it('Invalidation in case of createdAt is not a date (using string)', () => {
+      const isValid = sut.validate({ ...props, createdAt: '2023' as any })
+      expect(isValid).toBeFalsy()
+      expect(sut.errors.createdAt).toStrictEqual(
+        [
+          'createdAt must be a Date instance'
         ]
       )
     })
