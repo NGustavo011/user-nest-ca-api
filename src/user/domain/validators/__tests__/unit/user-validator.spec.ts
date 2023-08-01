@@ -186,7 +186,7 @@ describe('UserValidator unit tests', () => {
     it('Invalidation in case of password length is greater 100 characters', () => {
       const isValid = sut.validate({
         ...props,
-        password: 'a'.repeat(256)
+        password: 'a'.repeat(101)
       })
       expect(isValid).toBeFalsy()
       expect(sut.errors.password).toStrictEqual(
