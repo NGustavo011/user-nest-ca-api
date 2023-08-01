@@ -58,8 +58,12 @@ export class SearchParams {
   }
 
   private set sortDir (value: string | null) {
-    if (!this.sort || !value) {
+    if (!this.sort) {
       this._sortDir = null
+      return
+    }
+    if (!value) {
+      this._sortDir = 'desc'
       return
     }
     const dir = `${value}`.toLowerCase()
