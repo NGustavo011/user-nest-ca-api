@@ -69,4 +69,22 @@ describe('UserEntity integration tests', () => {
       expect(() => { entity.update({ name: 'valid_name' }) }).not.toThrow()
     })
   })
+
+  describe('UpdatePassword method', () => {
+    let entity: UserEntity
+    beforeEach(() => {
+      entity = new UserEntity(UserDataBuilder({}))
+    })
+
+    it('Should throw an error when updatePassword a user with invalid name', () => {
+      expect(() => { entity.updatePassword(null as any) }).toThrowError(EntityValidationError)
+      expect(() => { entity.updatePassword('' as any) }).toThrowError(EntityValidationError)
+      expect(() => { entity.updatePassword(10 as any) }).toThrowError(EntityValidationError)
+      expect(() => { entity.updatePassword('a'.repeat(101) as any) }).toThrowError(EntityValidationError)
+    })
+
+    it('Should updatePassword a valid user', () => {
+      expect(() => { entity.updatePassword('valid_password') }).not.toThrow()
+    })
+  })
 })
