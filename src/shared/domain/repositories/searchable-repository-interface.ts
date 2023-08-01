@@ -11,6 +11,16 @@ export interface SearchProps<Filter = string> {
   filter?: Filter | null
 }
 
+export interface SearchResultProps<E extends Entity, Filter> {
+  items: E[]
+  total: number
+  currentPage: number
+  perPage: number
+  sort: string | null
+  sortDir: SortDirection | null
+  filter: Filter | null
+}
+
 export class SearchParams {
   protected _page: number = 1
   protected _perPage: number = 15
@@ -76,6 +86,42 @@ export class SearchParams {
 
   private set filter (value: string | null) {
     this._filter = value === null || value === undefined || value === '' ? null : `${value}`
+  }
+}
+
+export class SearchResult<E extends Entity, Filter = string> {
+  readonly items: E[]
+  readonly total: number
+  readonly currentPage: number
+  readonly perPage: number
+  readonly sort: string | null
+  readonly sortDir: SortDirection | null
+  readonly filter: Filter | null
+  readonly lastPage: number
+
+  constructor (props: SearchResultProps<E, Filter>) {
+    this.items = props.items
+    this.total = props.total
+    this.currentPage = props.currentPage
+    this.perPage = props.perPage
+    this.sort = props.sort
+    this.sortDir = props.sortDir
+    this.filter = props.filter
+    this.lastPage = Math.ceil(this.total / this.perPage)
+  }
+
+  toJSON (forceEntity = false) {
+    return {
+      items: forceEntity ? this.items.map((item) => item.toJSON()) : this.items,
+      total: this.total,
+      currentPage: this.currentPage,
+      perPage: this.perPage,
+      sort: this.sort,
+      sortDir: this.sortDir,
+      filter: this.filter,
+      lastPage: this.lastPage
+
+    }
   }
 }
 
