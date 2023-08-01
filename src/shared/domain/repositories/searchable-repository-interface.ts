@@ -127,9 +127,9 @@ export class SearchResult<E extends Entity, Filter = string> {
 
 export interface SearchableRepositoryInterface<
   E extends Entity,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  SearchInput,
-  SearchOutput
+  Filter = string,
+  SearchInput = SearchParams,
+  SearchOutput = SearchResult<E, Filter>
 > extends RepositoryInterface<E> {
-  search: (props: SearchParams) => Promise<SearchOutput>
+  search: (props: SearchInput) => Promise<SearchOutput>
 }
