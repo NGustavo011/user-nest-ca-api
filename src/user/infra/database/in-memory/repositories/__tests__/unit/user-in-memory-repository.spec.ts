@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/dot-notation */
 import { NotFoundError } from '@/shared/domain/errors/not-found-error'
 import { UserInMemoryRepository } from '../../user-in-memory-repository'
 import { UserEntity } from '@/user/domain/entities/user.entity'
@@ -36,6 +37,30 @@ describe('UserInMemoryRepository unit tests', () => {
 
     it('Should not throws error in emailExists when user with email is not found', async () => {
       expect(async () => { await sut.emailExists('a@a.com') }).not.toThrow()
+    })
+  })
+
+  describe('ApplyFilter method', () => {
+    it('Should no filter items when filter object is null', async () => {
+      const entity = new UserEntity(UserDataBuilder({}))
+      await sut.insert(entity)
+      const result = await sut.findAll()
+      const spyFilter = jest.spyOn(result, 'filter')
+      const itemsFiltered = await sut['applyFilter'](result, null as any)
+      expect(spyFilter).not.toHaveBeenCalled()
+      expect(itemsFiltered).toStrictEqual(result)
+    })
+
+    it('Should filter name field using filter param', async () => {
+      const items = [
+        new UserEntity(UserDataBuilder({ name: 'Test' })),
+        new UserEntity(UserDataBuilder({ name: 'TEST' })),
+        new UserEntity(UserDataBuilder({ name: 'fake' }))
+      ]
+      const spyFilter = jest.spyOn(items, 'filter')
+      const itemsFiltered = await sut['applyFilter'](items, 'TEST')
+      expect(spyFilter).toHaveBeenCalled()
+      expect(itemsFiltered).toStrictEqual([items[0], items[1]])
     })
   })
 })
