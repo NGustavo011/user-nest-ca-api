@@ -12,7 +12,7 @@ class StubEntity extends Entity<StubEntityProps> {
 }
 
 class StubInMemorySearchableRepository extends InMemorySearchableRepository<StubEntity> {
-  sortableFields: ['name']
+  sortableFields: string[] = ['name']
 
   protected async applyFilter (items: StubEntity[], filter: string | null): Promise<StubEntity[]> {
     if (!filter) {
