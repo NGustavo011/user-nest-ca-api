@@ -1,7 +1,6 @@
 import { UserDataBuilder } from '@/user/domain/testing/helpers/user-data-builder'
 import { SignupUseCase } from '../../signup-usecase'
 import { type HashProvider } from '@/shared/application/providers/hash-provider'
-import { type UserRepository } from '@/user/domain/repositories/user-repository-interface'
 import { BcryptHashProvider } from '@/user/infra/providers/hash-provider/bcrypt-hash-provider'
 import { UserInMemoryRepository } from '@/user/infra/database/in-memory/repositories/user-in-memory-repository'
 import { ConflictError } from '@/shared/domain/errors/conflict-error'
@@ -9,7 +8,7 @@ import { BadRequestError } from '@/shared/application/errors/bad-request-error'
 
 describe('SignupUseCase unit tests', () => {
   let sut: SignupUseCase.UseCase
-  let repository: UserRepository.Repository
+  let repository: UserInMemoryRepository
   let hashProvider: HashProvider
 
   beforeEach(() => {
