@@ -1,7 +1,7 @@
 import { type UserRepository } from '@/user/domain/repositories/user-repository-interface'
 import { type UseCase as DefaultUseCase } from '@/shared/application/usecases/usecase'
 
-export namespace GetUserUseCase {
+export namespace DeleteUserUseCase {
 
   export interface Input {
     id: string
