@@ -20,7 +20,7 @@ export namespace UpdateUserUseCase {
 
     async execute (input: Input): Promise<Output> {
       const { id, name } = input
-      if (!id || !name) {
+      if (!name) {
         throw new BadRequestError('Input data not provided')
       }
       const entity = await this.userRepository.findById(id)
