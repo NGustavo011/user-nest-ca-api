@@ -23,10 +23,10 @@ export namespace UpdatePasswordUseCase {
 
     async execute (input: Input): Promise<Output> {
       const { id, newPassword, oldPassword } = input
-      const entity = await this.userRepository.findById(id)
       if (!newPassword || !oldPassword) {
         throw new InvalidPasswordError('Old password and new password are required')
       }
+      const entity = await this.userRepository.findById(id)
       const checkOldPassword = await this.hashProvider.compareHash(oldPassword, entity.password)
       if (!checkOldPassword) {
         throw new InvalidPasswordError('Old password does not match')
