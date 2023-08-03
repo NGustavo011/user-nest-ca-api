@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/prefer-readonly */
 import { Controller, Get, Post, Body, Patch, Param, Delete, Inject, HttpCode, Query, Put } from '@nestjs/common'
 import { SignupDto } from './dto/signup.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
@@ -15,25 +16,25 @@ import { UpdatePasswordDto } from './dto/update-password.dto'
 @Controller('user')
 export class UserController {
   @Inject(SignupUseCase.UseCase)
-  private readonly signupUseCase: SignupUseCase.UseCase
+  private signupUseCase: SignupUseCase.UseCase
 
   @Inject(SigninUseCase.UseCase)
-  private readonly signinUseCase: SigninUseCase.UseCase
+  private signinUseCase: SigninUseCase.UseCase
 
   @Inject(UpdateUserUseCase.UseCase)
-  private readonly updateUserUseCase: UpdateUserUseCase.UseCase
+  private updateUserUseCase: UpdateUserUseCase.UseCase
 
   @Inject(UpdatePasswordUseCase.UseCase)
-  private readonly updatePasswordUseCase: UpdatePasswordUseCase.UseCase
+  private updatePasswordUseCase: UpdatePasswordUseCase.UseCase
 
   @Inject(DeleteUserUseCase.UseCase)
-  private readonly deleteUserUseCase: DeleteUserUseCase.UseCase
+  private deleteUserUseCase: DeleteUserUseCase.UseCase
 
   @Inject(GetUserUseCase.UseCase)
-  private readonly getUserUseCase: GetUserUseCase.UseCase
+  private getUserUseCase: GetUserUseCase.UseCase
 
   @Inject(ListUsersUseCase.UseCase)
-  private readonly listUsersUseCase: ListUsersUseCase.UseCase
+  private listUsersUseCase: ListUsersUseCase.UseCase
 
   @Post()
   async create (@Body() signupDto: SignupDto) {
