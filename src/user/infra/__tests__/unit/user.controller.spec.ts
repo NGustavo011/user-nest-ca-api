@@ -90,4 +90,13 @@ describe('UserController unit tests', () => {
     expect(output).toMatchObject(result)
     expect(mockUpdatePasswordUseCase.execute).toHaveBeenCalledWith({ id, ...input })
   })
+
+  it('Should delete a user', async () => {
+    const mockDeleteUserUseCase = {
+      execute: jest.fn().mockReturnValue(Promise.resolve(undefined))
+    }
+    sut['deleteUserUseCase'] = mockDeleteUserUseCase as any
+    await sut.remove(id)
+    expect(mockDeleteUserUseCase.execute).toHaveBeenCalledWith({ id })
+  })
 })
