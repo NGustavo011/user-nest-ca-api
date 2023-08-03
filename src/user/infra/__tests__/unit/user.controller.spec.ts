@@ -1,9 +1,12 @@
+/* eslint-disable @typescript-eslint/dot-notation */
 import { type SignupUseCase } from '@/user/application/usecases/signup-usecase'
 import { UserController } from '../../user.controller'
 import { type UserOutput } from '@/user/application/dtos/user-output'
 import { type SignupDto } from '../../dto/signup.dto'
 import { type SigninUseCase } from '@/user/application/usecases/signin-usecase'
 import { type SigninDto } from '../../dto/signin.dto'
+import { type UpdateUserUseCase } from '@/user/application/usecases/update-user-usecase'
+import { type UpdateUserDto } from '../../dto/update-user.dto'
 
 describe('UserController unit tests', () => {
   let sut: UserController
@@ -22,16 +25,15 @@ describe('UserController unit tests', () => {
     }
   })
 
-  it('should be defined', () => {
+  it('Should be defined', () => {
     expect(sut).toBeDefined()
   })
 
-  it('should create a user', async () => {
+  it('Should create a user', async () => {
     const output: SignupUseCase.Output = props
     const mockSignupUseCase = {
       execute: jest.fn().mockReturnValue(Promise.resolve(output))
     }
-    // eslint-disable-next-line @typescript-eslint/dot-notation
     sut['signupUseCase'] = mockSignupUseCase as any
     const input: SignupDto = {
       name: 'Gustavo Pato',
@@ -43,12 +45,11 @@ describe('UserController unit tests', () => {
     expect(mockSignupUseCase.execute).toHaveBeenCalledWith(input)
   })
 
-  it('should authenticate a user', async () => {
+  it('Should authenticate a user', async () => {
     const output: SigninUseCase.Output = props
     const mockSigninUseCase = {
       execute: jest.fn().mockReturnValue(Promise.resolve(output))
     }
-    // eslint-disable-next-line @typescript-eslint/dot-notation
     sut['signinUseCase'] = mockSigninUseCase as any
     const input: SigninDto = {
       email: 'gpato@gmail.com',
@@ -57,5 +58,19 @@ describe('UserController unit tests', () => {
     const result = await sut.login(input)
     expect(output).toMatchObject(result)
     expect(mockSigninUseCase.execute).toHaveBeenCalledWith(input)
+  })
+
+  it('Should update a user', async () => {
+    const output: UpdateUserUseCase.Output = props
+    const mockUpdateUserUseCase = {
+      execute: jest.fn().mockReturnValue(Promise.resolve(output))
+    }
+    sut['updateUserUseCase'] = mockUpdateUserUseCase as any
+    const input: UpdateUserDto = {
+      name: 'newName'
+    }
+    const result = await sut.update(id, input)
+    expect(output).toMatchObject(result)
+    expect(mockUpdateUserUseCase.execute).toHaveBeenCalledWith({ id, ...input })
   })
 })
