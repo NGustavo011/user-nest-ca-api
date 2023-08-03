@@ -1,4 +1,5 @@
-import { PartialType } from '@nestjs/mapped-types'
-import { CreateUserDto } from './create-user.dto'
+import { type UpdateUserUseCase } from '@/user/application/usecases/update-user-usecase'
 
-export class UpdateUserDto extends PartialType(CreateUserDto) {}
+export class UpdateUserDto implements Omit<UpdateUserUseCase.Input, 'id'> {
+  name: string
+}
